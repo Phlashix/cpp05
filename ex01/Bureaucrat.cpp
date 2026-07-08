@@ -40,13 +40,35 @@ void Bureaucrat::DecrementGrade(int remove)
     _Grade += remove;
 }
 
-void Bureaucrat::Print() const
+void Bureaucrat::print() const
 {
     std::cout << _Name
               << ", bureaucrat grade "
               << _Grade
               << "." 
               << std::endl;
+}
+
+void Bureaucrat::SignForm(Form &form)
+{
+    try
+    {
+        form.beSigned(*this);
+
+        std::cout << _Name
+                  << " signed "
+                  << form.GetFormName()
+                  << std::endl;
+    }
+    catch (std::exception& e)
+    {
+        std::cout << _Name
+                  << " couldn't sign "
+                  << form.GetFormName()
+                  << " because "
+                  << e.what()
+                  << std::endl;
+    }
 }
 
 const char* Bureaucrat::GradeTooHighException::what() const throw()

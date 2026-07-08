@@ -13,12 +13,27 @@ Form::Form(std::string name, int gradeToSign, int gradeToExecute)
 }
 
 
-void Form::BeSigned(Bureaucrat& bureaucrat)
+void Form::beSigned(Bureaucrat& bureaucrat)
 {
     if (bureaucrat.GetGrade() <= _GradeToSign)
         _IsSigned = true;
     else
         throw GradeTooLowException();
+}
+
+
+void Form::print() const
+{
+    std::cout << "Name : " << _Name << std::endl;
+    std::cout << "Signed : " 
+              << (_IsSigned ? "Yes" : "No")
+              << std::endl;
+    std::cout << "Grade to sign : "
+              << _GradeToSign
+              << std::endl;
+    std::cout << "Grade to execute : "
+              << _GradeToExecute
+              << std::endl;
 }
 
 /*  --------------Getters------------- */

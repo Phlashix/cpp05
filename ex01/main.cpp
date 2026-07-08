@@ -2,224 +2,147 @@
 #include "Form.hpp"
 #include <iostream>
 
-int main(void)
+int main()
 {
-    std::cout << "\n========== BUREAUCRAT TEST ==========\n" << std::endl;
+	std::cout << "===== BUREAUCRAT TESTS =====" << std::endl;
 
-    try
-    {
-        Bureaucrat bob("bob", 3);
-        Bureaucrat lily("lily", 5);
-        Bureaucrat jose("jose", 149);
-        Bureaucrat eva("eva", 1);
+	try
+	{
+		Bureaucrat bob("Bob", 50);
+		Bureaucrat alice("Alice", 1);
+		Bureaucrat low("Low", 150);
 
-        bob.Print();
-        lily.Print();
-        jose.Print();
-        eva.Print();
+		bob.print();
+		alice.print();
+		low.print();
 
+		std::cout << "\n===== INCREMENT TEST =====" << std::endl;
+		bob.AddGrade(2);
+		bob.print();
 
-        std::cout << "\n--- Add grade ---\n" << std::endl;
+		std::cout << "\n===== DECREMENT TEST =====" << std::endl;
+		low.DecrementGrade(1);
+		low.print();
 
-        lily.AddGrade(2);
-        lily.Print();
-
-
-        std::cout << "\n--- Add grade error ---\n" << std::endl;
-
-        try
-        {
-            eva.AddGrade(1);
-        }
-        catch (std::exception& e)
-        {
-            std::cout << "eva: " << e.what() << std::endl;
-        }
+		std::cout << "\n===== COPY TEST =====" << std::endl;
+		Bureaucrat copy(bob);
+		copy.print();
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "Exception : " << e.what() << std::endl;
+	}
 
 
-        std::cout << "\n--- Remove grade ---\n" << std::endl;
+	std::cout << "\n===== INVALID BUREAUCRAT =====" << std::endl;
 
-        bob.DecrementGrade(2);
-        bob.Print();
+	try
+	{
+		Bureaucrat tooHigh("TooHigh", 0);
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "TooHigh OK : " << e.what() << std::endl;
+	}
 
-
-        std::cout << "\n--- Remove grade error ---\n" << std::endl;
-
-        try
-        {
-            jose.DecrementGrade(2);
-        }
-        catch (std::exception& e)
-        {
-            std::cout << "jose: " << e.what() << std::endl;
-        }
-
-
-        std::cout << "\n--- Multiple grade changes ---\n" << std::endl;
-
-        bob.AddGrade(1);
-        bob.AddGrade(1);
-        bob.Print();
-
-        lily.DecrementGrade(10);
-        lily.Print();
+	try
+	{
+		Bureaucrat tooLow("TooLow", 151);
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "TooLow OK : " << e.what() << std::endl;
+	}
 
 
-        std::cout << "\n========== FORM TEST ==========\n" << std::endl;
+	std::cout << "\n===== FORM CREATION =====" << std::endl;
+
+	try
+	{
+		Form contract("Contract", 50, 25);
+		contract.print();
+
+		Bureaucrat boss("Boss", 10);
+
+		std::cout << "\nBoss signs contract" << std::endl;
+		boss.SignForm(contract);
+
+		contract.print();
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "Form exception : " << e.what() << std::endl;
+	}
 
 
-        std::cout << "\n--- Form creation ---\n" << std::endl;
+	std::cout << "\n===== FORM SIGN FAILURE =====" << std::endl;
 
-        Form contract("Contract", 50, 25);
+	try
+	{
+		Form secret("Secret", 10, 5);
+		Bureaucrat intern("Intern", 100);
 
-        std::cout << "Name : "
-                  << contract.GetFormName()
-                  << std::endl;
+		secret.print();
 
-        std::cout << "Signed : "
-                  << (contract.getSigned() ? "Yes" : "No")
-                  << std::endl;
-
-        std::cout << "Grade to sign : "
-                  << contract.getGradeToSign()
-                  << std::endl;
-
-        std::cout << "Grade to execute : "
-                  << contract.getGradeToExecute()
-                  << std::endl;
+		std::cout << "Intern tries to sign" << std::endl;
+		intern.SignForm(secret);
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "Expected failure OK : " << e.what() << std::endl;
+	}
 
 
-        std::cout << "\n--- Form signature success ---\n" << std::endl;
+	std::cout << "\n===== MULTIPLE FORM TESTS =====" << std::endl;
 
-        Bureaucrat boss("boss", 10);
+	try
+	{
+		Form easy("EasyForm", 150, 150);
+		Form hard("HardForm", 1, 1);
 
-        contract.BeSigned(boss);
+		Bureaucrat normal("Normal", 100);
+		Bureaucrat master("Master", 1);
 
-        std::cout << "Signed : "
-                  << (contract.getSigned() ? "Yes" : "No")
-                  << std::endl;
+		std::cout << "\nEasy form before:" << std::endl;
+		easy.print();
 
+		normal.SignForm(easy);
 
+		std::cout << "\nHard form before:" << std::endl;
+		hard.print();
 
-        std::cout << "\n--- Form signature failed ---\n" << std::endl;
+		master.SignForm(hard);
 
-        try
-        {
-            Bureaucrat intern("intern", 100);
-            Form secret("Secret", 50, 25);
-
-            secret.BeSigned(intern);
-        }
-        catch (std::exception& e)
-        {
-            std::cout << "intern: "
-                      << e.what()
-                      << std::endl;
-        }
-
+		hard.print();
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "Exception : " << e.what() << std::endl;
+	}
 
 
-        std::cout << "\n--- Form creation error high ---\n" << std::endl;
+	std::cout << "\n===== INVALID FORMS =====" << std::endl;
 
-        try
-        {
-            Form badHigh("BadHigh", 0, 20);
-        }
-        catch (std::exception& e)
-        {
-            std::cout << "BadHigh: "
-                      << e.what()
-                      << std::endl;
-        }
+	try
+	{
+		Form badHigh("BadHigh", 0, 10);
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "BadHigh OK : " << e.what() << std::endl;
+	}
 
-
-
-        std::cout << "\n--- Form creation error low ---\n" << std::endl;
-
-        try
-        {
-            Form badLow("BadLow", 50, 200);
-        }
-        catch (std::exception& e)
-        {
-            std::cout << "BadLow: "
-                      << e.what()
-                      << std::endl;
-        }
-
-    }
-    catch (std::exception& e)
-    {
-        std::cout << "Error: "
-                  << e.what()
-                  << std::endl;
-    }
+	try
+	{
+		Form badLow("BadLow", 150, 151);
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "BadLow OK : " << e.what() << std::endl;
+	}
 
 
+	std::cout << "\n===== END TESTS =====" << std::endl;
 
-    std::cout << "\n========== BOUNDARY TEST ==========\n"
-              << std::endl;
-
-
-    try
-    {
-        Bureaucrat top("top", 1);
-        top.AddGrade(1);
-    }
-    catch (std::exception& e)
-    {
-        std::cout << "grade 1 increment: "
-                  << e.what()
-                  << std::endl;
-    }
-
-
-    try
-    {
-        Bureaucrat bottom("bottom", 150);
-        bottom.DecrementGrade(1);
-    }
-    catch (std::exception& e)
-    {
-        std::cout << "grade 150 decrement: "
-                  << e.what()
-                  << std::endl;
-    }
-
-
-
-    std::cout << "\n========== CREATION ERROR TEST ==========\n"
-              << std::endl;
-
-
-    try
-    {
-        Bureaucrat lola("lola", -1);
-        lola.Print();
-    }
-    catch (std::exception& e)
-    {
-        std::cout << "lola: "
-                  << e.what()
-                  << std::endl;
-    }
-
-
-    try
-    {
-        Bureaucrat gg("gg", 152);
-        gg.Print();
-    }
-    catch (std::exception& e)
-    {
-        std::cout << "gg: "
-                  << e.what()
-                  << std::endl;
-    }
-
-
-    std::cout << "\n========== END TEST ==========\n"
-              << std::endl;
-
-    return 0;
+	return 0;
 }
